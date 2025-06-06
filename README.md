@@ -136,3 +136,24 @@ pacman -Qi visual-studio-code-bin
 
 ---
 
+Tema -> Breeze
+Icons -> Papirus Normal
+
+Kurulan Ek paketler:
+
+timeshift
+spectacle
+kde partition manager
+ntfs-3g
+flatpak
+yay
+vs-code-bin
+google-chrome-bin
+docker & docker-compose
+nvidia-cuda-toolkit : docker için
+zsh : oh-my-zsh : powerlevel10k
+vim
+nomacs
+
+discover : mission center : appstream:io.missioncenter.MissionCenter
+discover : vlc
