@@ -157,3 +157,5 @@ nomacs
 
 discover : mission center : appstream:io.missioncenter.MissionCenter
 discover : vlc
+discover : Qalculate! : appstream:io.github.Qalculate.qalculate-qt
+discover : BleachBit : appstream:org.bleachbit.BleachBit
