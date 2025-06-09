@@ -159,3 +159,32 @@ discover : mission center : appstream:io.missioncenter.MissionCenter
 discover : vlc
 discover : Qalculate! : appstream:io.github.Qalculate.qalculate-qt
 discover : BleachBit : appstream:org.bleachbit.BleachBit
+
+
+# Optimizasyon
+systemd-analyze
+systemd-analyze blame
+
+sudo systemctl disable docker.service
+sudo systemctl disable docker.socket
+sudo systemctl stop docker.socket docker.service
+sudo systemctl disable containerd
+sudo systemctl stop containerd
+
+sudo systemctl disable libvirtd.service
+sudo systemctl disable virtlogd.service
+
+sudo systemctl disable NetworkManager-wait-online.service
+sudo systemctl mask NetworkManager-wait-online.service
+
+sudo systemctl disable upower.service
+sudo systemctl stop upower.service
+
+yay -S preload
+
+sudo pacman -S amd-ucode 
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+sudo vim /etc/default/grub
+change timeout
+sudo grub-mkconfig -o /boot/grub/grub.cfg
