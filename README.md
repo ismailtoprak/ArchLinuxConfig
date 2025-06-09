@@ -201,4 +201,154 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ---
 
+## 🎮 NVIDIA + KDE Plasma Wayland Optimizasyonu (Arch Linux)
+
+Bu belge, Arch Linux üzerinde NVIDIA ekran kartı ile KDE Plasma (Wayland oturumu) ortamında tam performanslı ve uyumlu bir yapılandırma sağlamak için hazırlanmıştır.
+
+---
+
+### ✅ Gerekli NVIDIA Paketlerini Kur
+
+```bash
+sudo pacman -S nvidia-dkms nvidia-utils libva-nvidia-driver libvdpau libxnvctrl
+```
+
+#### Açıklamalar:
+- `nvidia-dkms`: Kernel güncellemeleriyle otomatik uyumlu NVIDIA sürücüsü
+- `nvidia-utils`: OpenGL, CUDA ve diğer kullanıcı araçları
+- `libva-nvidia-driver`: VA-API üzerinden donanım hızlandırma
+- `libvdpau`: Video decode API desteği
+- `libxnvctrl`: nvidia-settings aracı için gereklidir
+
+---
+
+### 🔧 DRM KMS (Kernel Mode Setting) Aktif Et
+
+```bash
+echo "options nvidia-drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf
+```
+
+> Wayland'ın NVIDIA ile çalışması için framebuffer desteği şarttır.
+
+---
+
+### ⚙️ GRUB'a Parametre Ekle
+
+```bash
+sudo nano /etc/default/grub
+```
+
+`GRUB_CMDLINE_LINUX_DEFAULT` satırına:
+
+```
+nvidia_drm.modeset=1
+```
+
+Ekledikten sonra:
+
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+---
+
+### 📦 Initramfs Güncelle (mkinitcpio)
+
+```bash
+sudo nano /etc/mkinitcpio.conf
+```
+
+`MODULES=()` satırına:
+
+```
+MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+```
+
+Kaydedip çık, ardından:
+
+```bash
+sudo mkinitcpio -P
+```
+
+---
+
+### 🗑️ X11 NVIDIA Config Dosyasını Temizle
+
+```bash
+sudo rm -f /etc/X11/xorg.conf.d/20-nvidia.conf
+```
+
+---
+
+### 🖥️ Plasma Wayland Oturumunu Kur ve Başlat
+
+```bash
+sudo pacman -S plasma-wayland-session
+```
+
+SDDM veya giriş yöneticisinde "Plasma (Wayland)" seç.
+
+---
+
+### 🔋 NVIDIA Performans/Güç Ayarları
+
+```bash
+sudo systemctl enable nvidia-persistenced.service
+```
+
+---
+
+### 🔎 Donanım Hızlandırma Kontrol
+
+```bash
+nvidia-smi
+```
+
+---
+
+### 🌐 Firefox & Electron için VA-API Hızlandırma
+
+#### Firefox:
+`about:config` sayfasında şunları değiştirin:
+
+- `media.ffmpeg.vaapi.enabled = true`
+- `gfx.webrender.all = true`
+- `layers.acceleration.force-enabled = true`
+
+---
+
+## 🔍 Kontrol Komutları
+
+```bash
+echo $XDG_SESSION_TYPE        # "wayland" olmalı
+cat /sys/module/nvidia_drm/parameters/modeset  # 1 olmalı
+lsmod | grep nvidia           # yüklü mü kontrol
+```
+
+---
+
+### 🧰 Ekstra Tavsiye Paketler
+
+```bash
+sudo pacman -S nvtop vulkan-tools egl-wayland nvidia-prime
+```
+
+- `nvtop`: NVIDIA canlı GPU kullanımı
+- `vulkan-tools`: Vulkan desteği testi için
+- `egl-wayland`: EGL Wayland backend (GBM)
+- `nvidia-prime`: PRIME offload sistemleri için
+
+---
+
+### 🧠 Sorun Giderme
+
+| Sorun                         | Çözüm                                       |
+|------------------------------|----------------------------------------------|
+| Wayland başlamıyor           | `nvidia_drm.modeset=1` eksik olabilir       |
+| Ekran yırtılması (tearing)   | DRM KMS aktif değilse olur                  |
+| KDE donuyor                  | Geçici olarak X11 oturumu kullan            |
+| X11 config dosyası kalmış    | `/etc/X11/` altını temizle                  |
+
+---
+
 > 📝 Not: Bu rehber kişisel kullanım içindir, sisteminize özgü farklılıklar olabilir.
