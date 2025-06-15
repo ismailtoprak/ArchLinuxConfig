@@ -147,6 +147,10 @@ sudo mount -a
 - VLC `org.videolan.VLC`
 - Qalculate! `io.github.Qalculate.qalculate-qt`
 - BleachBit `org.bleachbit.BleachBit`
+-  `Layan Theme` : Tema
+-  `Papirus` : Icons
+-  `Plasma Drawer` : Application Dashboard
+-  `Volantes Cursors` : Cursors
 
 ---
 
