@@ -1,18 +1,16 @@
 #!/bin/bash
-echo "===================================="
-echo "Pacman (resmi repo) paketleri"
-echo "===================================="
-pacman -Qent
+# Kurulu paketleri listeleyip app-list.txt dosyasına kaydeder
 
-echo
-echo "===================================="
-echo "AUR / Foreign paketler"
-echo "===================================="
-pacman -Qm
+out_file="app-list.txt"
+: > "$out_file"   # dosyayı sıfırla
 
-echo
-echo "===================================="
-echo "Flatpak paketleri"
-echo "===================================="
-flatpak list --app
+# Pacman (resmi repo)
+pacman -Qent | awk '{print "pacman:" $1}' >> "$out_file"
 
+# AUR / Foreign
+pacman -Qm | awk '{print "aur:" $1}' >> "$out_file"
+
+# Flatpak
+flatpak list --app --columns=application | awk '{print "flatpak:" $1}' >> "$out_file"
+
+echo "✅ Paket listesi '$out_file' dosyasına yazıldı."
