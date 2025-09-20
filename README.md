@@ -132,8 +132,16 @@ flatpak:<paket_adı>
 
 ## 5. Tema ve Arayüz (Opsiyonel)
 
-- Tema: Breeze
-- Simge Seti: Papirus (Normal)
+- Global Theme: Layan (Normal)
+- Colors: Breeze Light (Normal)
+- Application Style: Breeze (Normal)
+- Plasma Style: Layan (Normal)
+- Window Decorations: Oxygen (Normal)
+- Icons: Papirus (Normal)
+- Cursors: Volantes Cursors (Normal)
+- System Sounds: Ocean
+- Splash Screen: Layan (Normal)
+- Login Screen: Layan (Normal)
 
 ---
 
@@ -192,30 +200,18 @@ sudo systemctl disable docker.service
 sudo systemctl disable docker.socket
 sudo systemctl disable containerd
 
-sudo systemctl disable libvirtd.service
-sudo systemctl disable virtlogd.service
-
 sudo systemctl disable NetworkManager-wait-online.service
 sudo systemctl mask NetworkManager-wait-online.service
-
-sudo systemctl disable upower.service
 ```
 
-### 7.3 Preload Kurulumu ve Aktifleştirme
-
-```bash
-yay -S preload
-sudo systemctl enable --now preload
-```
-
-### 7.4 Mikro Kod ve GRUB Güncellemesi
+### 7.3 Mikro Kod ve GRUB Güncellemesi
 
 ```bash
 sudo pacman -S amd-ucode
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### 7.5 GRUB Timeout Ayarı
+### 7.4 GRUB Timeout Ayarı
 
 ```bash
 sudo vim /etc/default/grub
