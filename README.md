@@ -49,8 +49,7 @@ Script içerisinde aşağıdaki seçenekler yapılandırıldı:
 
 - Dosya Sistemi: `ext4`
 - Bootloader: `grub`
-- Masaüstü Ortamı: `KDE Plasma`
-- Ek Paketler: `git`, `vim`
+- Masaüstü Ortamı: `None`
 - Kullanıcı Hesabı: oluşturuldu, sudo yetkisi verildi
 - Ağ, saat, bölge, dil ayarları: yapılandırıldı
 
