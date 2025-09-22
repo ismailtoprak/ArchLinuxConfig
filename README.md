@@ -49,15 +49,12 @@ Script içerisinde aşağıdaki seçenekler yapılandırıldı:
 
 - Dosya Sistemi: `ext4`
 - Bootloader: `grub`
-- Masaüstü Ortamı: `None`
+- Masaüstü Ortamı: `KDE Plasma`
+   - Paketler: `ark`, `dolphin`, `htop`, `iwd`, `kate`, `konsole`, `nano`, `openssh`, `plasma-meta`, `plasma-workspace`, `smartmontools`, `vim`, `wget`, `wireless_tools`, `wpa_supplicant`, `xdg-utils`
+- NVIDIA Sürücüsü: `dkms`, `libva-nvidia-driver`, `nvidia-dkms`, `xorg-server`, `xorg-xinit`
+- Geeter: `sddm`
 - Kullanıcı Hesabı: oluşturuldu, sudo yetkisi verildi
 - Ağ, saat, bölge, dil ayarları: yapılandırıldı
-
-Kurulumdan sonra konfigürasyon dosyası:
-
-```
-/var/lib/archinstall/installation.json
-```
 
 ---
 
@@ -107,30 +104,44 @@ bash app-installer.sh
 
 Not: `app-list.txt` dosyasının eski sistemde güncellenmiş olması gerekir.
 
-### 4.2 Paket Listesini Güncelleme
+---
 
-Kurulumdan sonra yeni paketler eklediyseniz veya mevcut paketlerde değişiklik yaptıysanız, güncel listeyi almak için:
+## 5. Terminal & Shell Özelleştirme
 
-- `util/app-list.sh`: Mevcut sistemde kurulu paketleri `app-list.txt` dosyasına kaydeder.
+### 5.1 Terminal Emülatörü
+
+KDE Plasma'da terminal emülatörü olarak `Konsole` kullanılmaktadır. Temel ayarları yapmak için:
 
 ```bash
-cd util
-bash app-list.sh
+konsole
 ```
 
-Not: Scriptin çalışabilmesi için `yay` ve `flatpak` kurulu olmalıdır.
+### 5.2 Shell Özelleştirmeleri
 
-Bu işlem sonunda `app-list.txt` dosyası aşağıdaki formatta oluşur:
+Konsole'da varsayılan shell'i değiştirmek için:
 
+1. Konsole'yi açın.
+2. Menüden `Settings` > `Configure Konsole` seçeneğine gidin.
+3. Profiles sekmesinde `New` butonuna tıklayın.
+4. `Command` alanına `/usr/bin/zsh` komutunu girin.
+5. Yeni profili varsayılan yapın.
+
+### 5.3 Oh-My-Zsh Kurulumu
+
+1. Terminali açın.
+```bash
+zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 ```
-pacman:<paket_adı>
-aur:<paket_adı>
-flatpak:<paket_adı>
+2. `~/.zshrc` dosyasını düzenleyin:
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
 ```
 
 ---
 
-## 5. Tema ve Arayüz (Opsiyonel)
+## 6. Tema ve Arayüz (Opsiyonel)
 
 - Global Theme: Layan (Normal)
 - Colors: Breeze Light (Normal)
@@ -141,13 +152,13 @@ flatpak:<paket_adı>
 - Cursors: Volantes Cursors (Normal)
 - System Sounds: Ocean
 - Splash Screen: Layan (Normal)
-- Login Screen: Layan (Normal)
+- Login Screen: Breeze (Normal)
 
 ---
 
-## 6. NTFS Disklerini Otomatik Bağlamak (fstab ile)
+## 7. NTFS Disklerini Otomatik Bağlamak (fstab ile)
 
-### 6.1 UUID Öğrenme
+### 7.1 UUID Öğrenme
 
 ```bash
 sudo blkid
@@ -158,16 +169,16 @@ sudo blkid
 /dev/sda1: UUID="1234-ABCD" TYPE="ntfs"
 ```
 
-### 6.2 Bağlantı Noktası Oluşturma
+### 7.2 Bağlantı Noktası Oluşturma
 
 ```bash
 sudo mkdir -p /mnt/The_Doctor
 ```
 
-### 6.3 fstab’a Ekleme
+### 7.3 fstab’a Ekleme
 
 ```bash
-sudo nano /etc/fstab
+sudo vim /etc/fstab
 ```
 
 Şu satırı ekleyin:
@@ -176,7 +187,7 @@ sudo nano /etc/fstab
 UUID=1234-ABCD  /mnt/The_Doctor  ntfs-3g  defaults,noatime  0  0
 ```
 
-### 6.4 Test Etme
+### 7.4 Test Etme
 
 ```bash
 sudo mount -a
@@ -184,34 +195,24 @@ sudo mount -a
 
 ---
 
-## 7. Sistem Optimizasyonu
+## 8. Sistem Optimizasyonu
 
-### 7.1 Açılış Analizi
+### 8.1 Açılış Analizi
 
 ```bash
 systemd-analyze
 systemd-analyze blame
 ```
 
-### 7.2 Gereksiz Servisleri Devre Dışı Bırakmak
+### 8.2 Gereksiz Servisleri Devre Dışı Bırakmak
 
 ```bash
 sudo systemctl disable docker.service
 sudo systemctl disable docker.socket
 sudo systemctl disable containerd
-
-sudo systemctl disable NetworkManager-wait-online.service
-sudo systemctl mask NetworkManager-wait-online.service
 ```
 
-### 7.3 Mikro Kod ve GRUB Güncellemesi
-
-```bash
-sudo pacman -S amd-ucode
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-### 7.4 GRUB Timeout Ayarı
+### 8.3 GRUB Timeout Ayarı
 
 ```bash
 sudo vim /etc/default/grub
@@ -221,22 +222,20 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ---
 
-## 8. NVIDIA + KDE Plasma Wayland Optimizasyonu (Arch Linux)
+## 9. NVIDIA + KDE Plasma Wayland Optimizasyonu (Arch Linux)
 
 Bu bölüm, Arch Linux üzerinde NVIDIA ekran kartı ile KDE Plasma (Wayland oturumu) ortamında tam performanslı ve uyumlu bir yapılandırma sağlamak için hazırlanmıştır.
 
-### 8.1 DRM KMS (Kernel Mode Setting) Aktif Et
+### 9.1 DRM KMS (Kernel Mode Setting) Aktif Et
 
 ```bash
 echo "options nvidia-drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf
 ```
 
-Wayland'ın NVIDIA ile çalışması için framebuffer desteği şarttır.
-
-### 8.2 GRUB'a Parametre Ekle
+### 9.2 GRUB'a Parametre Ekle
 
 ```bash
-sudo nano /etc/default/grub
+sudo vim /etc/default/grub
 ```
 
 `GRUB_CMDLINE_LINUX_DEFAULT` satırına:
@@ -251,10 +250,10 @@ Ekledikten sonra:
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### 8.3 Initramfs Güncelle (mkinitcpio)
+### 9.3 Initramfs Güncelle (mkinitcpio)
 
 ```bash
-sudo nano /etc/mkinitcpio.conf
+sudo vim /etc/mkinitcpio.conf
 ```
 
 `MODULES=()` satırına:
@@ -269,13 +268,13 @@ Kaydedip çık, ardından:
 sudo mkinitcpio -P
 ```
 
-### 8.4 NVIDIA Performans/Güç Ayarları
+### 9.4 NVIDIA Performans/Güç Ayarları
 
 ```bash
 sudo systemctl enable --now nvidia-persistenced
 ```
 
-### 8.5 Donanım Hızlandırma Kontrol
+### 9.5 Donanım Hızlandırma Kontrol
 
 ```bash
 nvidia-smi
@@ -283,7 +282,7 @@ nvidia-smi
 
 ---
 
-## 9. Kontrol Komutları
+## 10. Kontrol Komutları
 
 ```bash
 echo $XDG_SESSION_TYPE        # "wayland" olmalı
@@ -293,7 +292,7 @@ lsmod | grep nvidia           # yüklü mü kontrol
 
 ---
 
-## 10. Sorun Giderme
+## 11. Sorun Giderme
 
 | Sorun                         | Çözüm                                       |
 |------------------------------|----------------------------------------------|
