@@ -6,6 +6,7 @@ pacman:easyeffects
 pacman:gnuradio-companion
 pacman:kalk
 pacman:nvidia-container-toolkit
+pacman:ntfs-3g
 pacman:nvtop
 pacman:obs-studio
 pacman:pacman-contrib
