@@ -52,7 +52,7 @@ Script içerisinde aşağıdaki seçenekler yapılandırıldı:
 - Masaüstü Ortamı: `KDE Plasma`
    - Paketler: `ark`, `dolphin`, `htop`, `iwd`, `kate`, `konsole`, `nano`, `openssh`, `plasma-meta`, `plasma-workspace`, `smartmontools`, `vim`, `wget`, `wireless_tools`, `wpa_supplicant`, `xdg-utils`
 - NVIDIA Sürücüsü: `dkms`, `libva-nvidia-driver`, `nvidia-dkms`, `xorg-server`, `xorg-xinit`
-- Geeter: `sddm`
+- Greeter: `sddm`
 - Kullanıcı Hesabı: oluşturuldu, sudo yetkisi verildi
 - Ağ, saat, bölge, dil ayarları: yapılandırıldı
 
@@ -87,22 +87,16 @@ sudo pacman -S flatpak
 
 ---
 
-## 4. Toplu Paket Kurulumu ve Liste Güncelleme
+## 4. Toplu Paket Kurulumu
 
-Yeni sistemde, eski sistemdeki paketlerin tamamını otomatik olarak kurmak için aşağıdaki adımları izleyin:
-
-- `util/app-installer.sh`: `app-list.txt` dosyasındaki paketleri yeni sisteme otomatik olarak kurar.
-
-### 4.1 Toplu Kurulum
-
-Başka bir sisteme aynı paketleri kurmak için:
+`util/app-installer.sh` scriptini çalıştırarak, `app-list.txt` dosyasındaki paketleri otomatik olarak kurabilirsiniz:
 
 ```bash
 cd util
 bash app-installer.sh
 ```
 
-Not: `app-list.txt` dosyasının eski sistemde güncellenmiş olması gerekir.
+Bu işlem, `app-list.txt` dosyasında listelenen tüm paketleri sisteme yükler.
 
 ---
 
@@ -209,7 +203,7 @@ systemd-analyze blame
 ```bash
 sudo systemctl disable docker.service
 sudo systemctl disable docker.socket
-sudo systemctl disable containerd
+sudo systemctl disable containerd.service
 ```
 
 ### 8.3 GRUB Timeout Ayarı
@@ -294,8 +288,8 @@ lsmod | grep nvidia           # yüklü mü kontrol
 
 ## 11. Sorun Giderme
 
-| Sorun                         | Çözüm                                       |
-|------------------------------|----------------------------------------------|
+| Sorun                        | Çözüm                                       |
+|------------------------------|---------------------------------------------|
 | Wayland başlamıyor           | `nvidia_drm.modeset=1` eksik olabilir       |
 | Ekran yırtılması (tearing)   | DRM KMS aktif değilse olur                  |
 
