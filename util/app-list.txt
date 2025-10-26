@@ -3,8 +3,10 @@ pacman:cuda
 pacman:docker
 pacman:docker-compose
 pacman:easyeffects
+pacman:fastfetch
 pacman:gnuradio-companion
 pacman:kalk
+pacman:minicom
 pacman:nvidia-container-toolkit
 pacman:ntfs-3g
 pacman:nvtop
@@ -14,6 +16,8 @@ pacman:partitionmanager
 pacman:spectacle
 pacman:timeshift
 pacman:tree
+pacman:ufw
+pacman:wireshark-qt
 pacman:zsh
 aur:google-chrome
 aur:nomacs
